@@ -1,0 +1,5 @@
+# Services ถูกเพิ่มทีละตัวตาม Issue ที่ทำ (ดู plan.md):
+#   Issue #3 — mlflow
+#   Issue #5 — postgres, airflow-webserver, airflow-scheduler, airflow-init
+#   Issue #6 — backend
+services: {}

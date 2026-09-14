@@ -102,17 +102,8 @@ ML เชิงวิชาการ ให้กลายเป็นระบ�
 
 ## คำศัพท์หลักของโครงงาน (Domain Vocabulary)
 
-- **Prediction (ผลพยากรณ์)**: ผลลัพธ์ของโมเดลสำหรับ 1 horizon บน 1 target date ประกอบด้วย
-  `predicted_return_pct` (จาก regression) และ `predicted_direction` (จาก classification
-  พร้อม probability)
-- **Horizon**: ระยะเวลาที่ Prediction มองไปข้างหน้า — t+1, t+5, หรือ t+10 วันทำการ
-- **Signal**: BUY / SELL / HOLD ที่แปลงมาจาก Prediction ผ่านกฎ threshold — ไม่ใช่ผลลัพธ์ดิบ
-  จากโมเดลโดยตรง
-- **Confidence Score**: ค่า probability ของ classifier สำหรับทิศทางที่ทำนาย ติดมากับ Signal
-- **Backtest**: การจำลองผลของกลยุทธ์ Signal บนช่วงข้อมูล test (รวม transaction cost)
-  ใช้ประเมินและ tune กลยุทธ์ (คนละอย่างกับ Quality Gate)
-- **Quality Gate**: เกณฑ์ขั้นต่ำของ backtest metric ที่โมเดลที่เทรนใหม่ต้องผ่านใน CI ก่อนถูก
-  promote ให้ API นำไปใช้งาน
+ดู glossary ฉบับเต็มที่ [`CONTEXT.md`](../CONTEXT.md) (Prediction, Horizon, Signal,
+Confidence Score, Backtest, Quality Gate)
 
 ---
 

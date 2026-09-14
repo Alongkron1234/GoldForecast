@@ -1,32 +1,35 @@
-# GoldForcast
+# GoldForecast
 
-GoldForcast คือระบบพยากรณ์ทิศทางและ % ผลตอบแทนราคาทองคำรายวัน ด้วย Hybrid ML
-(Classification + Regression) ครอบคลุมหลาย horizon (t+1, t+5, t+10) สร้างสัญญาณ
-Buy/Sell/Hold ประเมินผลด้วย Backtesting มี pipeline อัตโนมัติผ่าน Airflow, MLflow
-tracking, เว็บ dashboard (FastAPI + React) พร้อม automated testing/CI
+GoldForecast is a system for forecasting the daily direction and % return of gold prices,
+using a Hybrid ML approach (Classification + Regression) across multiple horizons
+(t+1, t+5, t+10). It generates Buy/Sell/Hold signals and evaluates them through
+backtesting, with an automated pipeline powered by Airflow, MLflow experiment tracking,
+a web dashboard (FastAPI + React), and full automated testing/CI.
 
-โครงงานวิชา CPE232 — ต่อยอดจาก proposal เดิมให้เป็นระบบระดับ portfolio ที่มี data
-pipeline, dashboard และ testing ครบวงจร ไม่ใช่แค่ notebook วิเคราะห์ข้อมูล
+A CPE232 course project — extending the original proposal into a portfolio-grade system
+with a full data pipeline, dashboard, and testing, rather than just an analysis notebook.
 
 ---
 
-## ภาพรวม (Overview)
+## Overview
 
-- **ข้อมูล**: ราคาทองคำ (OHLCV) + ดัชนีเศรษฐกิจมหภาค (DXY, Crude Oil, VIX, US 10Y Yield,
-  S&P 500) ย้อนหลัง 10 ปี จาก Yahoo Finance
-- **โมเดล**: XGBoost/LightGBM (regression + classification) พร้อม Logistic Regression
-  baseline, LSTM เป็น baseline เสริม
-- **Multi-horizon**: พยากรณ์ล่วงหน้า t+1, t+5, t+10 วันทำการ เพื่อดูว่าโมเดลมี edge
-  จริงถึงระยะไหน
-- **Signal**: กฎ rule-based threshold แปลงผลโมเดล → BUY / SELL / HOLD พร้อม
+- **Data**: Gold prices (OHLCV) + macroeconomic indicators (DXY, Crude Oil, VIX,
+  US 10Y Yield, S&P 500), 10 years of history from Yahoo Finance
+- **Models**: XGBoost/LightGBM (regression + classification) with a Logistic Regression
+  baseline, plus LSTM as an extra baseline
+- **Multi-horizon**: forecasts t+1, t+5, and t+10 trading days ahead, to see how far the
+  model's edge actually holds
+- **Signal**: a rule-based threshold converts model output → BUY / SELL / HOLD with a
   confidence score
-- **Backtest**: จำลองกลยุทธ์บนข้อมูล test รวม transaction cost เทียบกับ buy-and-hold
-- **Pipeline**: Apache Airflow ดึงข้อมูล/predict รายวัน, retrain โมเดลรายสัปดาห์พร้อม
-  quality gate ก่อน promote
-- **Dashboard**: FastAPI + React แสดง signal ล่าสุด, กราฟราคา, ผล backtest
+- **Backtest**: simulates the strategy on test data including transaction costs,
+  compared against buy-and-hold
+- **Pipeline**: Apache Airflow fetches data/predicts daily, retrains models weekly with
+  a quality gate before promotion
+- **Dashboard**: FastAPI + React showing the latest signal, price chart, and backtest
+  results
 - **Testing/CI**: unit tests, data validation tests, model quality gate, GitHub Actions
 
-## สถาปัตยกรรม (Architecture)
+## Architecture
 
 ```
 Yahoo Finance ──┐
@@ -47,7 +50,7 @@ Yahoo Finance ──┐
 
 ## Tech Stack
 
-| ส่วน | เทคโนโลยี |
+| Layer | Technology |
 |---|---|
 | Data & ML | Python, pandas, XGBoost/LightGBM, scikit-learn, MLflow |
 | Orchestration | Apache Airflow, Docker Compose |
@@ -57,7 +60,7 @@ Yahoo Finance ──┐
 | CI/CD | GitHub Actions |
 | Deployment | Vercel/Netlify (frontend), Render/Fly.io (backend), Managed Postgres |
 
-## โครงสร้างโปรเจกต์
+## Project Structure
 
 ```
 GoldForcast/
@@ -66,32 +69,32 @@ GoldForcast/
 ├── backend/          # FastAPI service
 ├── frontend/         # React dashboard
 ├── notebooks/        # EDA
-├── docs/             # เอกสารโครงงาน (PROJECT.md, ADR)
-├── plan.md           # แผนงานแบ่งตาม Issue/Branch
+├── docs/             # project documentation (PROJECT.md, ADR)
+├── plan.md           # roadmap broken down by Issue/Branch
 └── docker-compose.yml
 ```
 
-## เริ่มต้นใช้งาน (Getting Started)
+## Getting Started
 
-> โปรเจกต์อยู่ระหว่างพัฒนา คำสั่งด้านล่างเป็น workflow ที่ตั้งใจไว้ (ดูความคืบหน้าจริงใน
-> [`plan.md`](plan.md))
+> The project is under active development; the commands below describe the intended
+> workflow (see [`plan.md`](plan.md) for actual progress)
 
 ```bash
-# ติดตั้ง dependencies ของ ml package
+# install the ml package's dependencies
 cd ml && pip install -e .
 
-# รัน service ทั้งหมด (Postgres, Airflow, MLflow, FastAPI) แบบ local
+# run all services locally (Postgres, Airflow, MLflow, FastAPI)
 docker compose up -d
 
-# รัน frontend dev server
+# run the frontend dev server
 cd frontend && npm install && npm run dev
 
-# รัน tests
+# run tests
 pytest ml/tests backend/tests
 ```
 
-## แผนพัฒนา (Roadmap)
+## Roadmap
 
-งานแบ่งเป็น 8 Issue/Branch ตาม milestone (setup → data pipeline → modeling →
-signal/backtest → db & orchestration → backend → frontend → CI/CD & deploy)
-ดูรายละเอียดทั้งหมดที่ [`plan.md`](plan.md)
+Work is split into 8 Issues/Branches by milestone (setup → data pipeline → modeling →
+signal/backtest → db & orchestration → backend → frontend → CI/CD & deploy).
+See full details in [`plan.md`](plan.md)
