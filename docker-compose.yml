@@ -1,5 +1,20 @@
-# Services ถูกเพิ่มทีละตัวตาม Issue ที่ทำ (ดู plan.md):
+# Services are added incrementally as each Issue lands:
 #   Issue #3 — mlflow
 #   Issue #5 — postgres, airflow-webserver, airflow-scheduler, airflow-init
 #   Issue #6 — backend
-services: {}
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.14.1
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+      --host 0.0.0.0
+      --port 5000
+
+volumes:
+  mlflow-data:

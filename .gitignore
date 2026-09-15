@@ -18,6 +18,7 @@ ml/data/raw/
 ml/data/processed/
 mlruns/
 mlartifacts/
+mlflow.db
 *.pkl
 *.joblib
 
