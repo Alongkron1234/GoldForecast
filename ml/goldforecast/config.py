@@ -1,5 +1,11 @@
 """Project-wide constants: data sources and forecast horizons."""
 
+import os
+
+# Falls back to a local SQLite file (no Docker needed) when the MLflow server
+# from docker-compose isn't running — same code path works in both cases.
+MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI", "sqlite:///mlflow.db")
+
 TICKERS = {
     "gold": "GC=F",
     "dxy": "DX-Y.NYB",
