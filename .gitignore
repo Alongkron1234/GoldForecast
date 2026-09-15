@@ -37,5 +37,9 @@ frontend/.vite/
 .vscode/
 .idea/
 
+# Claude Code local settings / project context — not meant for GitHub
+.claude/
+CONTEXT.md
+
 # Jupyter
 .ipynb_checkpoints/
