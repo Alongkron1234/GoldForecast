@@ -17,6 +17,12 @@ TICKERS = {
 
 HORIZONS = [1, 5, 10]
 
+# Fixed (not "today - 10 years") so re-running the data pipeline on a different day
+# doesn't shift the train/val/test date boundaries — backtest results need to stay
+# comparable across runs.
+DATA_START = "2016-09-16"
+DATA_END = "2026-09-14"
+
 # Technical indicator parameters — standard values used across the industry,
 # not project-specific tuning (see CONTEXT.md / docs/PROJECT.md for rationale).
 MA_WINDOWS = [5, 20]
