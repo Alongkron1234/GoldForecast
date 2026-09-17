@@ -41,14 +41,16 @@ def run_backtest(
     normally `return_pct_t{horizon}` from the test split, so the model never
     saw these outcomes during training or threshold tuning."""
 
-    # ได้เป็น list ของการกระทำ (action) สำหรับแต่ละวัน: "BUY", "SELL", หรือ "HOLD" โดยใช้ฟังก์ชัน generate_signal
+    # ได้เป็น list ของการกระทำ (action) สำหรับแต่ละวัน: "BUY", "SELL", หรือ "HOLD"
+    # โดยใช้ฟังก์ชัน generate_signal
     actions = [
         generate_signal(r, d, c, x, y).action
         for r, d, c in zip(predicted_return_pct, predicted_direction, confidence, strict=True)
     ]
     actions = pd.Series(actions, index=actual_return_pct.index)
 
-    # แปลงการกระทำเป็นผลตอบแทนรายวัน (daily return) โดยใช้ผลตอบแทนที่เกิดขึ้นจริง (actual return) และทิศทางของการซื้อขาย (BUY/SELL/HOLD)
+    # แปลงการกระทำเป็นผลตอบแทนรายวัน (daily return) โดยใช้ผลตอบแทนที่เกิดขึ้นจริง
+    # (actual return) และทิศทางของการซื้อขาย (BUY/SELL/HOLD)
     daily_return = pd.Series(0.0, index=actual_return_pct.index)
     daily_return[actions == "BUY"] = actual_return_pct[actions == "BUY"]
     daily_return[actions == "SELL"] = -actual_return_pct[actions == "SELL"]
