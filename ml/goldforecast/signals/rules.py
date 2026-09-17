@@ -56,7 +56,10 @@ def _strategy_returns(
     return strategy_return
 
 
-def _sharpe_ratio(daily_returns_pct: pd.Series) -> float:
+def sharpe_ratio(daily_returns_pct: pd.Series) -> float:
+    """Annualized Sharpe ratio of a daily % return series. Shared with
+    `backtest/engine.py` so threshold search and the final backtest score
+    strategies the same way."""
     if daily_returns_pct.empty or daily_returns_pct.std() == 0:
         return 0.0
     return (daily_returns_pct.mean() / daily_returns_pct.std()) * np.sqrt(252)
@@ -81,7 +84,7 @@ def find_best_threshold(
             returns = _strategy_returns(
                 predicted_return_pct, predicted_direction, confidence, actual_return_pct, x, y
             )
-            sharpe = _sharpe_ratio(returns)
+            sharpe = sharpe_ratio(returns)
             if sharpe > best["sharpe"]:
                 best = {"x": x, "y": y, "sharpe": sharpe}
     return best
