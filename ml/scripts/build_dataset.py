@@ -3,7 +3,6 @@ full feature pipeline, and cache the result locally under ml/data/raw/ so
 the EDA notebook (and quick local experiments) have real data to work with
 before Postgres exists (see plan.md, Issue #5)."""
 
-from datetime import date, timedelta
 from pathlib import Path
 
 from goldforecast import config
@@ -18,9 +17,9 @@ OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "raw"
 
 
 def main():
-    # กำหนดช่วงเวลาในการดึงข้อมูลย้อนหลัง 10 ปีจากวันนี้
-    end = date.today().isoformat()
-    start = (date.today() - timedelta(days=365 * 10)).isoformat()
+    # ช่วงวันที่ fix ตายตัวไว้ใน config.py (ไม่ผูกกับวันที่รันสคริปต์)
+    start = config.DATA_START
+    end = config.DATA_END
 
     print(f"fetching {start} .. {end} for {len(config.TICKERS)} tickers")
 
